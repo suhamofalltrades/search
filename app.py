@@ -19,9 +19,13 @@ search_cache = {}
 @app.route('/')
 def index():
     """Render the main search page"""
-    engines = get_available_engines()
-    return render_template('index.html', engines=engines)
-
+    try:
+        engines = get_available_engines()
+        logger.debug(f"Available engines: {engines}")  # Log the engines
+        return render_template('index.html', engines=engines)
+    except Exception as e:
+        logger.error(f"Error loading engines: {str(e)}")
+        return render_template('index.html', error="Error loading engines"), 500
 @app.route('/search')
 def search():
     """Handle search requests and render results page"""
