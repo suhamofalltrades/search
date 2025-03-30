@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request
 import os
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "HEAD"])
+@app.route('/')
 def home():
-    if request.method == "HEAD":
-        return "", 200  # Empty response for HEAD requests
+    template_path = os.path.join(app.template_folder, "index.html")
+    print("Looking for template at:", template_path)
+    print("Templates available:", os.listdir(app.template_folder))
     return render_template("index.html")
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Use Render's assigned port or default
-    app.run(host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    app.run(debug=True)
